@@ -1,18 +1,24 @@
 const functions = require('firebase-functions');
 
 exports.randomChanged = functions.database.ref("/lights/random").onWrite((event) => {
-    const lightsRef = event.data.ref.parent
-    const counterRef=lightsRef.child('counter')
-    const indexRef=lightsRef.child('index')
-    // const length=lightsRef.child('colors').orderByKey().limitToLast(1) //Object.keys(colorsRef).length
-    return counterRef.transaction((counter)=>{
-        return counter + 1;
-    }) && indexRef.transaction((index)=>{
-        return (index < 6 ? index + 1 : 0); // TODO: 6 est codé en dur !
-    })
+  const lightsRef = event.data.ref.parent
+  const counterRef = lightsRef.child('counter')
+  const indexRef = lightsRef.child('index')
+  const colorsRef = lightsRef.child('colors')
+
+  // const length = colorsRef.orderByKey().limitToLast(1)
+  //   .then(snapshot => snapshot.val() || 6)
+
+  return counterRef.transaction((counter) => {
+    return counter + 1;
+  }) && indexRef.transaction((index) => {
+    return (index < 6 ? index + 1 : 0); // TODO: 6 est en dur !
+  })
+
 });
 
 
+// Object.keys(colorsRef).length
 // var collectionRef = event.data.ref.parent;
 // var countRef = collectionRef.parent.child('counter');
 //
