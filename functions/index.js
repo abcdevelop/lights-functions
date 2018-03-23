@@ -6,17 +6,18 @@ exports.randomChanged = functions.database.ref("/lights/random").onWrite((event)
   const indexRef = lightsRef.child('index')
   const colorsRef = lightsRef.child('colors')
 
-  // const length = colorsRef.orderByKey().limitToLast(1)
-  //   .then(snapshot => snapshot.val() || 6)
-
-  return counterRef.transaction((counter) => {
-    return counter + 1;
-  }) && indexRef.transaction((index) => {
-    return (index < 6 ? index + 1 : 0); // TODO: 6 est en dur !
-  })
-
+  return counterRef.transaction(counter => counter + 1) &&
+    indexRef.transaction(index => (index < 6  ? index + 1 : 0)) // TODO: 6 est en dur !
 });
 
+
+// return counterRef.transaction(counter => counter + 1) &&
+//   colorsRef.on("value", (snapshot) => snapshot.numChildren())
+//     .then(length => indexRef.transaction((index,length) => (index < length ? index + 1 : 0)))
+
+
+// const length = colorsRef.orderByKey().limitToLast(1)
+//   .then(snapshot => snapshot.key() || 6)
 
 // Object.keys(colorsRef).length
 // var collectionRef = event.data.ref.parent;
